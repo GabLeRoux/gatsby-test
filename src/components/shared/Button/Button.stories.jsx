@@ -1,5 +1,4 @@
 import React from 'react';
-import { text, boolean, select } from '@storybook/addon-knobs';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faFacebookF,
@@ -10,77 +9,53 @@ import Button from './Button';
 
 export default {
   title: 'Shared/Button',
+  component: Button,
+  argTypes: {
+    children: { control: 'text', defaultValue: 'Click me' },
+    size: {
+      control: { type: 'select', options: ['sm', null, 'lg'] },
+      defaultValue: null,
+    },
+    disabled: { control: 'boolean', defaultValue: false },
+    icon: { control: 'boolean', defaultValue: false },
+    color: { control: 'text', defaultValue: 'default' },
+  },
 };
 
-const SIZES = {
-  Small: 'sm',
-  Normal: null,
-  Large: 'lg',
+const Template = (args) => <Button {...args} />;
+
+export const DefaultButtons = Template.bind({});
+DefaultButtons.args = {
+  color: 'conference',
+  // If there are other default props, list them here.
 };
 
-const ButtonStory = (otherProps) => {
-  const props = {
-    children: text('Content', 'Click me'),
-    size: select('Size?', SIZES, null),
-    disabled: boolean('Disabled?', false),
-    icon: boolean('Icon?', false) ? (
-      <FontAwesomeIcon icon={faFacebookF} />
-    ) : null,
-    ...otherProps,
-  };
-
-  const linkProps = { color: 'link', ...props };
-
-  return (
-    <div className="mb-4">
-      <Button color="conference" {...props} />
-      <div className="bg-dark d-inline-block p-2">
-        <Button color="conference" outline {...props} />
-        <Button color="primary" {...props} />
-      </div>
-      <Button {...props} />
-      <Button color="dark" {...props} />
-      <Button {...linkProps} />
-
-      <Button size="sm" className="text-light" {...linkProps} />
-    </div>
-  );
+export const IconButtons = Template.bind({});
+IconButtons.args = {
+  icon: <FontAwesomeIcon icon={faFacebookF} />,
+  color: 'primary',
+  // If there are other icon button props, list them here.
 };
 
-export const DefaultButtons = () => (
-  <>
-    <p>Default buttons</p>
-    <ButtonStory />
-    <p>Internal Link component buttons</p>
-    <ButtonStory to="/test" />
-    <p>External link buttons</p>
-    <ButtonStory href="http://google.ca" target="_blank" />
-  </>
-);
-
-const IconStory = (otherProps) => (
+const IconStory = (args) => (
   <div className="mb-4">
-    <Button
-      icon={<FontAwesomeIcon icon={faFacebookF} />}
-      color="primary"
-      {...otherProps}
-    />
-    <Button
-      icon={<FontAwesomeIcon icon={faLinkedin} />}
-      color="secondary"
-      {...otherProps}
-    />
-    <Button icon={<FontAwesomeIcon icon={faTwitter} />} {...otherProps} />
+    <Button icon={<FontAwesomeIcon icon={faFacebookF} />} {...args} />
+    <Button icon={<FontAwesomeIcon icon={faLinkedin} />} {...args} />
+    <Button icon={<FontAwesomeIcon icon={faTwitter} />} {...args} />
   </div>
 );
 
-export const IconButtons = () => (
-  <>
-    <p>Small icon buttons</p>
-    <IconStory size="sm" />
-    <p>Medium icon buttons</p>
-    <IconStory size="md" />
-    <p>Large icon buttons</p>
-    <IconStory size="lg" />
-  </>
-);
+export const SmallIconButtons = IconStory.bind({});
+SmallIconButtons.args = {
+  size: 'sm',
+};
+
+export const MediumIconButtons = IconStory.bind({});
+MediumIconButtons.args = {
+  size: 'md',
+};
+
+export const LargeIconButtons = IconStory.bind({});
+LargeIconButtons.args = {
+  size: 'lg',
+};
