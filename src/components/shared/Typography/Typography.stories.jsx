@@ -1,48 +1,66 @@
 import React from 'react';
-import { text, boolean } from '@storybook/addon-knobs';
 import Typography from './Typography';
 
 export default {
   title: 'Shared/Typography',
+  component: Typography,
+  argTypes: {
+    uppercase: {
+      control: 'boolean',
+      defaultValue: false,
+      description: 'Uppercase text?',
+    },
+    light: {
+      control: 'boolean',
+      defaultValue: false,
+      description: 'Lighter text?',
+    },
+    content: {
+      control: 'text',
+      defaultValue: 'À propos du Saglac IO',
+      description: 'Text content',
+    },
+  },
 };
 
-const TEXT = 'À propos du Saglac IO';
-
-export const Titles = () =>
+const TemplateTitles = ({ content, ...args }) =>
   ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].map((variant) => (
     <>
       <span>{variant}</span>
-      <Typography
-        variant={variant}
-        uppercase={boolean('Uppercase?', false)}
-        light={boolean('light?', false)}
-      >
-        {text('Text:', TEXT)}
+      <Typography variant={variant} {...args}>
+        {content}
       </Typography>
     </>
   ));
 
-export const OtherTexts = () => {
-  const content = text('Text:', TEXT);
-  const props = {
-    uppercase: boolean('Uppercase?', false),
-    light: boolean('light?', false),
-  };
-  return (
-    <>
-      <span>Paragraph</span>
-      <Typography {...props}>{content}</Typography>
-      <span>Span</span>
-      <br />
-      <Typography tag="span" {...props}>
-        {content}
-      </Typography>
-      <br />
-      <span>Lead</span>
-      <br />
-      <Typography lead {...props}>
-        {content}
-      </Typography>
-    </>
-  );
+export const Titles = TemplateTitles.bind({});
+Titles.args = {
+  uppercase: false,
+  light: false,
+  content: 'À propos du Saglac IO',
+};
+
+const TemplateOtherTexts = ({ content, ...args }) => (
+  <>
+    <span>Paragraph</span>
+    <Typography {...args}>{content}</Typography>
+    <span>Span</span>
+    <br />
+    <Typography tag="span" {...args}>
+      {content}
+    </Typography>
+    <br />
+    <span>Lead</span>
+    <br />
+    <Typography lead {...args}>
+      {content}
+    </Typography>
+  </>
+);
+
+export const OtherTexts = TemplateOtherTexts.bind({});
+OtherTexts.args = {
+  uppercase: false,
+  light: false,
+  content: 'À propos du Saglac IO',
 };
